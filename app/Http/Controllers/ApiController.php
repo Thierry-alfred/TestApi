@@ -15,7 +15,7 @@ class ApiController extends Controller
      */
     public function __construct()
     {
-        $this->beforeFilter('auth', ['on' => 'post']);
+        //$this->beforeFilter('auth', ['on' => 'post']);
     }
     /**
      * valeur entiere pour le resultat / statut d'une requette

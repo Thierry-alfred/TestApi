@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\User;
+use App\fichier;
 use App\Http\Requests;
 use JWTAuth;
 use Response;
@@ -36,7 +37,7 @@ class UserController extends ApiController
             if($user){
                 $api_token = $user->api_token;
                 if ($api_token == NULL){
-                    return $this->_login($request['email'], $request['password']);
+                    return $this->login($request['email'], $request['password']);
                 }
                 try{
                     $user = JWTAuth::toUser($api_token);
@@ -44,7 +45,7 @@ class UserController extends ApiController
                         'status' => 'success',
                         'status_code' => $this->getStatusCode(),
                         'message' => 'DEJA CONNECTE',
-                        'user' => $this->userTransformer->transform($user)
+                        'user' => $user
                     ]);
                 }catch(JWTException $e){
                     $user->api_token = NULL;
@@ -84,20 +85,21 @@ class UserController extends ApiController
     public function register(Request $request)
     {
         $rules = array (
-            'name' => 'required',
+            'last_name' => 'required',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed'
+            'password' => 'required|min:6'
         );
+       // var_dump($request);
         $validator = Validator::make($request->all(), $rules);
         if ($validator-> fails()){
             return $this->respondValidationError('VERIFIER VOS CHAMPS', $validator->errors());
         }
         else{
+
             $user = User::create([
-                'name' => $request['name'],
                 'last_name' => $request['last_name'],
                 'first_name' => $request['first_name'],
-                'bith_date' => $request['bith_date'],
+                'birth_date' => $request['birth_date'],
                 'email' => $request['email'],
                 'password' => \Hash::make($request['password']),
             ]);
