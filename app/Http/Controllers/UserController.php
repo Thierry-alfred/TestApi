@@ -103,7 +103,12 @@ class UserController extends ApiController
                 'email' => $request['email'],
                 'password' => \Hash::make($request['password']),
             ]);
-            return $this->login($request['email'], $request['password']);
+            return $this->respond([
+                'status' => 'success',
+                'status_code' => $this->getStatusCode(),
+                'message' => 'REGISTER REUSSIE',
+                'data' => $user
+            ]);
         }
     }
 
