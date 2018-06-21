@@ -49,7 +49,7 @@ class UserController extends ApiController
                     ]);
                 }catch(JWTException $e){
                     $user->api_token = NULL;
-                    $user->save();
+                    //$user->save();
                     return $this->respondInternalError("AUTHENTIFICATION ECHOUE");
                 }
             }
@@ -135,4 +135,15 @@ class UserController extends ApiController
             return $this->respondInternalError("LOG OUT ECHOUE!");
         }
     }
+
+
+    /**
+     * @description:  save profile img
+     * @param: file file
+     * @return: json string response
+     */
+    public function changeIMG(Request $request){
+        return $request['file'];
+    }
+
 }
